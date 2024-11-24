@@ -70,11 +70,10 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Store Playwright's Version
+      - name: Set Playwright Version
         run: |
-          PLAYWRIGHT_VERSION=$(npm ls @playwright/test | grep @playwright | awk '{print $2}' | sed 's/@//')
+          export PLAYWRIGHT_VERSION="1.49.0"
           echo "Playwright's Version: $PLAYWRIGHT_VERSION"
-          echo "PLAYWRIGHT_VERSION=$PLAYWRIGHT_VERSION" >> $GITHUB_ENV
 
       - name: Cache Playwright Browsers
         uses: actions/cache@v3
