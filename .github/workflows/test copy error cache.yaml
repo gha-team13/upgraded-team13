@@ -33,7 +33,7 @@ jobs:
       - name: Check for Type Errors
         run: npm run typecheck
 
-      # Step 5: Prepare Environment for Build
+      # Step 5: Prepare Environment for Build1
       - name: Create .env File
         run: echo "FLAGSMITH_KEY=${{ secrets.FLAGSMITH_KEY }}" > .env
 
