@@ -19,7 +19,7 @@ describe("Home", () => {
     render(await Home());
 
     const docH = screen.getByRole("heading", {
-      name: "Hello World",
+      name: "Hello TechJam2024",
       level: 2,
     });
 
