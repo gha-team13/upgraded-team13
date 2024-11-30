@@ -1,0 +1,93 @@
+name: Dummy CI/CD Workflow
+
+on:
+  workflow_dispatch: # Trigger manually or via POSTMAN
+  pull_request: # Trigger on pull request events
+    branches:
+      - main
+
+env:
+  DUMMY_ENV: test
+  FLAGS_ENV: local
+
+jobs:
+  lint-test-build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout dummy code
+      run: echo "Checking out dummy code..."
+
+    - name: Set up dummy environment
+      run: echo "Setting up dummy environment variables..."
+
+    - name: Simulate installing dependencies
+      run: echo "Installing dummy dependencies..."
+
+    - name: Simulate linting code
+      run: echo "Linting dummy code..."
+
+    - name: Simulate running tests
+      run: echo "Running dummy tests..."
+
+    - name: Simulate building project
+      run: echo "Building dummy project..."
+
+    - name: Upload dummy artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: dummy-build
+        path: ./dummy-artifacts/
+
+  codeql-scan:
+    needs: lint-test-build
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout dummy code
+      run: echo "Checking out dummy code for security scan..."
+
+    - name: Perform dummy CodeQL analysis
+      run: echo "Performing dummy CodeQL scan..."
+
+  deploy:
+    needs: [lint-test-build, codeql-scan]
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Simulate deployment to local environment
+      run: |
+        echo "Simulating deployment to local environment..."
+        mkdir -p ./local-deployment
+        echo "Dummy deployment files here" > ./local-deployment/index.html
+        echo "Local Deployment URL: http://dummy-local-env"
+
+    - name: Comment dummy deployment URL
+      run: echo "Feature branch deployed: http://dummy-local-env" \
+        | echo "Commenting dummy deployment URL..."
+
+  versioning:
+    needs: lint-test-build
+    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+    - name: Simulate generating dummy changeset
+      run: echo "Generating dummy changeset..."
+
+    - name: Simulate bumping version and creating PR
+      run: echo "Simulating version bump and creating dummy PR..."
+
+    - name: Simulate merging version bump PR
+      run: echo "Merging dummy version bump PR..."
+
+  deploy-to-prod:
+    needs: [versioning]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Dummy manual approval required
+      run: echo "Simulating manual approval for dummy production deployment..."
+
+    - name: Simulate deployment to dummy production
+      run: |
+        echo "Simulating deployment to dummy production..."
+        mkdir -p ./local-production
+        echo "Dummy production files here" > ./local-production/index.html
+        echo "Dummy Production URL: http://dummy-production-env"
