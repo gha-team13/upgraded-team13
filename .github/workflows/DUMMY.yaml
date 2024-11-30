@@ -4,7 +4,7 @@ on:
   workflow_dispatch: # Trigger manually or via POSTMAN
   pull_request: # Trigger on pull request events
     branches:
-      - main
+      - gha-team13-dummy
 
 env:
   DUMMY_ENV: test
