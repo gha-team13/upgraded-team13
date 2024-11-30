@@ -11,87 +11,167 @@ env:
   FLAGS_ENV: local
 
 jobs:
-  lint-test-build:
+  update-submission:
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout dummy code
-      run: echo "Checking out dummy code..."
+    - name: Checkout KPI data
+      uses: actions/checkout@v3
+    - name: Set up environment
+      run: echo "Setting up environment for scorecard update..."
 
-    - name: Set up dummy environment
-      run: echo "Setting up dummy environment variables..."
-
-    - name: Simulate installing dependencies
-      run: echo "Installing dummy dependencies..."
-
-    - name: Simulate linting code
-      run: echo "Linting dummy code..."
-
-    - name: Simulate running tests
-      run: echo "Running dummy tests..."
-
-    - name: Simulate building project
-      run: |
-        echo "Building dummy project..."
-        mkdir -p ./dummy-artifacts
-        echo "This is a dummy artifact" > ./dummy-artifacts/dummy-file.txt
-
-    - name: Upload dummy artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: dummy-build
-        path: ./dummy-artifacts/
-
-  codeql-scan:
-    needs: lint-test-build
+  data-validation:
+    needs: update-submission
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout dummy code
-      run: echo "Checking out dummy code for security scan..."
+    - name: Validate KPI data
+      run: echo "Validating KPI data for consistency, completeness, and format standards..."
+    - name: Handle validation errors
+      if: failure()
+      run: echo "Validation failed. Notifying team for corrections..."
 
-    - name: Perform dummy CodeQL analysis
-      run: echo "Performing dummy CodeQL scan..."
+  data-transformation:
+    needs: data-validation
+    if: success()
+    runs-on: ubuntu-latest
+    steps:
+    - name: Transform KPI data
+      run: echo "Transforming KPI data to required scorecard format..."
+
+  integrate-scorecard:
+    needs: data-transformation
+    runs-on: ubuntu-latest
+    steps:
+    - name: Integrate transformed data into scorecard
+      run: echo "Integrating transformed KPI data with the existing scorecard..."
 
   deploy:
-    needs: [lint-test-build, codeql-scan]
-    if: ${{ github.event_name == 'workflow_dispatch' }}
+    needs: integrate-scorecard
     runs-on: ubuntu-latest
     steps:
-    - name: Simulate deployment to local environment
+    - name: Deploy updated scorecard
       run: |
-        echo "Simulating deployment to local environment..."
-        mkdir -p ./local-deployment
-        echo "Dummy deployment files here" > ./local-deployment/index.html
-        echo "Local Deployment URL: http://dummy-local-env"
+        echo "Deploying updated scorecard to the web-based dashboard..."
+        mkdir -p ./scorecard-dashboard
+        echo "Updated Scorecard" > ./scorecard-dashboard/index.html
+        echo "Scorecard Deployment URL: http://updated-scorecard-env"
+    - name: Notify stakeholders
+      run: echo "Notifying stakeholders via email or Slack about the scorecard update..."
 
-    - name: Comment dummy deployment URL
-      run: |
-        echo "Feature branch deployed: http://dummy-local-env"
-        echo "Commenting dummy deployment URL..."
-
-  versioning:
-    needs: lint-test-build
-    if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch' }}
-    runs-on: ubuntu-latest
-    steps:
-    - name: Simulate generating dummy changeset
-      run: echo "Generating dummy changeset..."
-
-    - name: Simulate bumping version and creating PR
-      run: echo "Simulating version bump and creating dummy PR..."
-
-    - name: Simulate merging version bump PR
-      run: echo "Merging dummy version bump PR..."
-
-  deploy-to-prod:
-    needs: [versioning]
+  approval:
+    needs: deploy
     runs-on: ubuntu-latest
     steps:
     - name: Dummy manual approval required
-      run: echo "Simulating manual approval for dummy production deployment..."
+      run: echo "Pausing for manual approval from data analysts..."
+    - name: Simulate data approval
+      run: echo "Data analysts approved the updated scorecard."
 
-    - name: Simulate deployment to dummy production
+  versioning:
+    needs: approval
+    runs-on: ubuntu-latest
+    steps:
+    - name: Generate version changeset
+      run: echo "Generating version changeset for updated scorecard..."
+    - name: Bump version and create pull request
+      run: echo "Bumping version and creating a new pull request..."
+    - name: Merge version bump pull request
+      run: echo "Merging version bump pull request into the main branch..."
+
+  deploy-to-prod:
+    needs: versioning
+    runs-on: ubuntu-latest
+    steps:
+    - name: Manual production deployment approval required
+      run: echo "Simulating manual approval for final production deployment..."
+    - name: Deploy to production
       run: |
-        echo "Simulating deployment to dummy production..."
-        mkdir -p ./local-production
-        echo "Dummy production files here" > ./local-production/index.html
-        echo "Dummy Production URL: http://dummy-production-env"
+        echo "Deploying updated scorecard to production..."
+        mkdir -p ./production-scorecard
+        echo "Production Scorecard" > ./production-scorecard/index.html
+        echo "Production Deployment URL: http://final-scorecard-env"
+
+# jobs:
+#   lint-test-build:
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Checkout dummy code
+#       run: echo "Checking out dummy code..."
+
+#     - name: Set up dummy environment
+#       run: echo "Setting up dummy environment variables..."
+
+#     - name: Simulate installing dependencies
+#       run: echo "Installing dummy dependencies..."
+
+#     - name: Simulate linting code
+#       run: echo "Linting dummy code..."
+
+#     - name: Simulate running tests
+#       run: echo "Running dummy tests..."
+
+#     - name: Simulate building project
+#       run: |
+#         echo "Building dummy project..."
+#         mkdir -p ./dummy-artifacts
+#         echo "This is a dummy artifact" > ./dummy-artifacts/dummy-file.txt
+
+#     - name: Upload dummy artifacts
+#       uses: actions/upload-artifact@v3
+#       with:
+#         name: dummy-build
+#         path: ./dummy-artifacts/
+
+#   codeql-scan:
+#     needs: lint-test-build
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Checkout dummy code
+#       run: echo "Checking out dummy code for security scan..."
+
+#     - name: Perform dummy CodeQL analysis
+#       run: echo "Performing dummy CodeQL scan..."
+
+#   deploy:
+#     needs: [lint-test-build, codeql-scan]
+#     if: ${{ github.event_name == 'workflow_dispatch' }}
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Simulate deployment to local environment
+#       run: |
+#         echo "Simulating deployment to local environment..."
+#         mkdir -p ./local-deployment
+#         echo "Dummy deployment files here" > ./local-deployment/index.html
+#         echo "Local Deployment URL: http://dummy-local-env"
+
+#     - name: Comment dummy deployment URL
+#       run: |
+#         echo "Feature branch deployed: http://dummy-local-env"
+#         echo "Commenting dummy deployment URL..."
+
+#   versioning:
+#     needs: lint-test-build
+#     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch' }}
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Simulate generating dummy changeset
+#       run: echo "Generating dummy changeset..."
+
+#     - name: Simulate bumping version and creating PR
+#       run: echo "Simulating version bump and creating dummy PR..."
+
+#     - name: Simulate merging version bump PR
+#       run: echo "Merging dummy version bump PR..."
+
+#   deploy-to-prod:
+#     needs: [versioning]
+#     runs-on: ubuntu-latest
+#     steps:
+#     - name: Dummy manual approval required
+#       run: echo "Simulating manual approval for dummy production deployment..."
+
+#     - name: Simulate deployment to dummy production
+#       run: |
+#         echo "Simulating deployment to dummy production..."
+#         mkdir -p ./local-production
+#         echo "Dummy production files here" > ./local-production/index.html
+#         echo "Dummy Production URL: http://dummy-production-env"
