@@ -30,7 +30,10 @@ jobs:
       run: echo "Running dummy tests..."
 
     - name: Simulate building project
-      run: echo "Building dummy project..."
+      run: |
+        echo "Building dummy project..."
+        mkdir -p ./dummy-artifacts
+        echo "This is a dummy artifact" > ./dummy-artifacts/dummy-file.txt
 
     - name: Upload dummy artifacts
       uses: actions/upload-artifact@v3
@@ -50,7 +53,7 @@ jobs:
 
   deploy:
     needs: [lint-test-build, codeql-scan]
-    if: github.event_name == 'workflow_dispatch'
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     steps:
     - name: Simulate deployment to local environment
@@ -67,7 +70,7 @@ jobs:
 
   versioning:
     needs: lint-test-build
-    if: github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true
+    if: ${{ github.event_name == 'pull_request' && github.event.action == 'closed' && github.event.pull_request.merged == true }}
     runs-on: ubuntu-latest
     steps:
     - name: Simulate generating dummy changeset
