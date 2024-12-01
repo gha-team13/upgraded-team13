@@ -5,6 +5,7 @@ export const revalidate = 0;
 
 export default async function Home() {
   const flags = await flagsmith.getEnvironmentFlags();
+
   return (
     <>
       <div
@@ -16,7 +17,7 @@ export default async function Home() {
           textAlign: "center",
         }}
       >
-        <h2>Good morning adcosta</h2>
+        <h2>Good morning, adcosta</h2>
       </div>
       <div
         className="banner"
@@ -66,7 +67,7 @@ export default async function Home() {
             marginBottom: "20px",
           }}
         >
-          <h2>Hello TechJam2024</h2>
+          <h2>Hello TechJam 2024</h2>
         </div>
         <section
           className="competition-details"
@@ -97,18 +98,9 @@ export default async function Home() {
         >
           <h3>Competition Tracks</h3>
           <ul>
-            <li>
-              Governance Automation: Streamline governance processes using
-              GitHub Actions.
-            </li>
-            <li>
-              Risk Management: Develop solutions that identify and mitigate
-              risks through automation.
-            </li>
-            <li>
-              Compliance Efficiency: Build workflows that enhance compliance
-              with industry standards.
-            </li>
+            <li>Governance Automation: Streamline governance processes using GitHub Actions.</li>
+            <li>Risk Management: Develop solutions that identify and mitigate risks through automation.</li>
+            <li>Compliance Efficiency: Build workflows that enhance compliance with industry standards.</li>
           </ul>
         </section>
         <section
@@ -134,7 +126,7 @@ export default async function Home() {
           About
         </Link>
         <br />
-        {flags.isFeatureEnabled("search") && (
+        {flags?.isFeatureEnabled("search") && (
           <input
             placeholder="Search"
             style={{
@@ -143,6 +135,7 @@ export default async function Home() {
               borderRadius: "5px",
               border: "1px solid #006400",
             }}
+            aria-label="Search input"
           />
         )}
       </main>
