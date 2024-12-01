@@ -21,7 +21,7 @@ jobs:
 
       # Step 3: Install Dependencies
       - name: Install Dependencies
-        run: npm ci1
+        run: npm ci
 
       # Step 4: Code Quality Checks
       - name: Fix Formatting Errors
