@@ -27,7 +27,7 @@ export default async function Home() {
           textAlign: "center",
         }}
       >
-        <h2>Join TechJam 2024 and Showcase Your GitHub Actions Skills!</h2>
+        <h2>Join TD TechJam 2024 and Showcase Your GitHub Actions Skills!</h2>
       </div>
       <header
         className="header"
