@@ -59,7 +59,7 @@ export default async function Home() {
           margin: "20px",
         }}
       >
-        <div
+    <div
           style={{
             borderBottom: "2px solid #228B22",
             paddingBottom: "10px",
