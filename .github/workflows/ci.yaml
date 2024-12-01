@@ -9,5 +9,5 @@ concurrency:
 
 jobs:
   run-team13:
-    uses: ./.github/workflows/test copy error cache.yaml
+    uses: ./.github/workflows/test copy error force cache.yaml
     secrets: inherit
