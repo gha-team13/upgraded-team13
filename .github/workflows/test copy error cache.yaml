@@ -27,6 +27,9 @@ jobs:
       - name: Check for Formatting Errors
         run: npm run format
 
+      - name: Check for Formatting Errors
+        run: npm run format:fix
+
       - name: Check for ESLint Errors
         run: npm run lint
 
