@@ -24,11 +24,11 @@ jobs:
         run: npm ci
 
       # Step 4: Code Quality Checks
-      - name: Check for Formatting Errors
-        run: npm run format
+      - name: Fix Formatting Errors
+        run: npm run format:fix
 
       - name: Check for Formatting Errors
-        run: npm run format:fix
+        run: npm run format
 
       - name: Check for ESLint Errors
         run: npm run lint
